@@ -1,0 +1,137 @@
+
+
+VVV Rope Test VVV
+
+Rope string is "Thus we test ourselves"
+Rope.toString() => "Thus we test ourselves"
+  FlatRope: "Thus we test ourselves"
+  Rope.length() => 22
+  Rope.depth() => 0 
+
+5th char is w = 'w'
+
+slice from 5 upto 12 [5..11) is "we test"
+Rope.toString() => "we test"
+  SubRope: "we test"
+  Rope.length() => 7
+  Rope.depth() => 0 
+
+slice from 5 length/size 7 is "we test"
+Rope.toString() => "we test"
+  SubRope: "we test"
+  Rope.length() => 7
+  Rope.depth() => 0 
+
+Rope from char 'c'
+Rope.toString() => "c"
+  FlatRope: "c"
+  Rope.length() => 1
+  Rope.depth() => 0 
+
+Join "This " and "that" => "This that"
+Rope.toString() => "This that"
+  FlatRope: "This that"
+  Rope.length() => 9
+  Rope.depth() => 0 
+
+Join this that and the other (3 ropes)
+Rope.toString() => "This that the other"
+  ConcatRope "This that the other" with parts:
+     FlatRope: "This that"
+     FlatRope: " the other"
+  Rope.length() => 19
+  Rope.depth() => 1 
+
+Rope at 0 put 'X' => "Xhus we test ourselves"
+Rope.toString() => "Xhus we test ourselves"
+  ConcatRope "Xhus we test ourselves" with parts:
+     FlatRope: "X"
+     SubRope: "hus we test ourselves"
+  Rope.length() => 22
+  Rope.depth() => 1 
+
+Rope at 8 put 'r' => "Thus we rest ourselves"
+Rope.toString() => "Thus we rest ourselves"
+  ConcatRope "Thus we rest ourselves" with parts:
+     FlatRope: "Thus we r"
+     SubRope: "est ourselves"
+  Rope.length() => 22
+  Rope.depth() => 1 
+
+Rope at 21 put 'X' => "Thus we test ourselveX"
+Rope.toString() => "Thus we test ourselveX"
+  ConcatRope "Thus we test ourselveX" with parts:
+     SubRope: "Thus we test ourselve"
+     FlatRope: "X"
+  Rope.length() => 22
+  Rope.depth() => 1 
+
+Rope at 8 put 'r' => "Thus we rest ourselves"
+Rope.toString() => "Thus we rest ourselves"
+  ConcatRope "Thus we rest ourselves" with parts:
+     FlatRope: "Thus we r"
+     SubRope: "est ourselves"
+  Rope.length() => 22
+  Rope.depth() => 1 
+
+
+TEST SETUP
+flatRope:
+  FlatRope: "1234abcd5678hijk90lm"
+subRope:
+  SubRope: "abcd5678hijk"
+concRope1:
+  ConcatRope "abcd5678hijk new string tail" with parts:
+     SubRope: "abcd5678hijk"
+     FlatRope: " new string tail"
+concRope2:
+  ConcatRope "abcd5678hijk new string tailabcd5678hijk new string tail" with parts:
+     ConcatRope "abcd5678hijk new string tail" with parts:
+        SubRope: "abcd5678hijk"
+        FlatRope: " new string tail"
+     ConcatRope "abcd5678hijk new string tail" with parts:
+        SubRope: "abcd5678hijk"
+        FlatRope: " new string tail"
+concRope3:
+  ConcatRope "Now is the time abcd5678hijk" with parts:
+     FlatRope: "Now is the time "
+     SubRope: "abcd5678hijk"
+longFlat:
+  FlatRope: "123456789012345678901234567890"
+shortFlat:
+  FlatRope: "short"
+
+TEST ACCESS
+flatRope.at(4)   = 'a' ? 'a'  :Passed
+subRope.at(1)    = 'b' ? 'b'  :Passed
+concRope1.at(1)  = 'b' ? 'b'  :Passed
+concRope1.at(13) = 'n' ? 'n'  :Passed
+concRope2.at(4)  = '5' ? '5'  :Passed
+concRope2.at(concRope1.length()+4) = '5' ? '5'  :Passed
+concRope3.at(4)  = 'i' ? 'i'  :Passed
+concRope3.at(20) = '5' ? '5'  :Passed
+
+TEST MUTATION
+flatRope.atPut( 0, '0' ).toString() == "0234abcd5678hijk90lm"  :Passed
+flatRope.atPut( flatRope.length() - 1, '0' ).toString() == "1234abcd5678hijk90l0"  :Passed
+flatRope.atPut( 4, '5' ).toString() == "12345bcd5678hijk90lm"  :Passed
+subRope.atPut( 4, 'e' ).toString() ==  "abcde678hijk"  :Passed
+subRope.atPut( 0, '0' ).toString() == "0bcd5678hijk"  :Passed
+subRope.atPut( (subRope.length()-1), '0' ).toString() == "abcd5678hij0"  :Passed
+concRope1.atPut( 1, '0' ).toString() ==  "a0cd5678hijk new string tail"  :Passed
+concRope1.atPut( 19, '0' ).toString() ==  "abcd5678hijk new st0ing tail"  :Passed
+concRope1.atPut( concRope1.length() -1, '0' ).toString() ==  "abcd5678hijk new string tai0"  :Passed
+concRope3.atPut( 1, '0' ).toString() ==   "N0w is the time abcd5678hijk"  :Passed
+concRope3.atPut( 19, '0' ).toString() ==   "Now is the time abc05678hijk"  :Passed
+concRope3.atPut( concRope1.length() - 1, '0' ).toString() ==   "Now is the time abcd5678hij0"  :Passed
+
+TEST REBALANCE
+assert( t1.depth() == 7 )   :Passed
+assert( t1.rebalance().depth() == 3 )   :Passed
+assert( t1.rebalance().toString() == t1.toString() )   :Passed
+assert( t2.depth() == 11 )   :Passed
+assert( t2.rebalance().depth() == 4 )   :Passed
+assert( t2.rebalance().toString() == t2.toString())   :Passed
+
+^^^ End Rope Test ^^^
+

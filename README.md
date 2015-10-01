@@ -5,7 +5,10 @@ Being immutable, ropes are thread-safe.  Ropes are useful, e.g. in text editing,
 
 Inferno OS is a simple to use, very portable OS.  Inferno itself compiles to bytecode and runs interpreted or is JIT'ed to native.
 
-Inferno runs hosted on Mac/Win/Linux/.. or native on various ARM/Intel/SPARC/PowerPC hardware (e.g. Nintendo/Android/Raspberry Pi). 
+Inferno runs hosted on Mac/Win/Linux/.. or native on various ARM/Intel/SPARC/PowerPC hardware (e.g. Nintendo/Android/Raspberry Pi)
+
+See
+	http://inferno-os.org/
 
 This implementation was done to familiarize myself with the Limbo programming language.
 

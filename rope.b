@@ -95,15 +95,10 @@ Rope.atPut( r: self ref Rope, index: int, unichar: int ) : ref Rope
 
 
 char2string( c: int ) : string
-{	#@@ FIXME: must exist somewhere..
-	mask := int 16r000000FF;
-	byteArray := array[] of { 
-		byte (c & mask),
-#		byte ((c >>  8) & mask),  ##@@FIXME: Print %s shows "c" but len reports 4
-#		byte ((c >>16) & mask),
-#		byte ((c >> 24) & mask)
-	};
-	return string byteArray;
+{
+	s := "" ;
+	s[0] = c ; ## assignment beyone the end extends the string
+	return s;
 }
 
 

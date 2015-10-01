@@ -97,7 +97,7 @@ Rope.atPut( r: self ref Rope, index: int, unichar: int ) : ref Rope
 char2string( c: int ) : string
 {
 	s := "" ;
-	s[0] = c ; ## assignment beyone the end extends the string
+	s[0] = c ; ## assignment just beyond the end extends the string
 	return s;
 }
 
